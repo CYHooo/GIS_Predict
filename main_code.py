@@ -1,10 +1,10 @@
 '''
-    conda env dlm
     python version: 3.8.10 (python >= 3.8)
 
     python package:    
         tensorflow == 2.10.0 (cuda==11.5,cudnn==8.3.1)
         silence_tensorflow
+        numpy == 1.20.0
 
         opencv-python == 4.1.2.30 (opencv < 4.2.0)
         scikit-image == 0.16.2 (scikit-image < 0.19.0)
