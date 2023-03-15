@@ -1,5 +1,7 @@
 # Building-Road-AI-Detecting
-This is a project for detecting building &amp; road with mask-rcnn &amp; unet model 
+This is a project for detecting building &amp; road with mask-rcnn &amp; unet model.
+
+For calculating geojson coordinate, need input ".tif" file with correct "crs" value.
 
 # Usage
 Run main_code.py, and result will be created to path:
