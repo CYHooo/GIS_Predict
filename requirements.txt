@@ -10,4 +10,9 @@ rdp==0.8
 geojson==2.5.0
 pycocotools-windows==2.0.0.2
 numpy==1.20.0
+<<<<<<< HEAD
 for test git
+=======
+영호형바보
+
+>>>>>>> 378e20422e3c8cf450ca0579d747d3b546497621
