@@ -9,7 +9,7 @@ This project only support python>=3.8.
 
 Requirements file is in the requirements.txt
 
-	pip install -r requirements_path/requirements.txt
+	pip install -r requirements.txt
 
 # Usage
 Run main_code.py, and result will be created to path:
