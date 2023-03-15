@@ -7,8 +7,8 @@ For calculating geojson coordinate, need input ".tif" file with correct "crs" va
 # Package
 This project only support python>=3.8.
 
-# Requirements
 Requirements file is in the requirements.txt
+
 	pip install -r requirements_path/requirements.txt
 
 # Usage
