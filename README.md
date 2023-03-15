@@ -2,7 +2,9 @@
 This is a project for detecting building &amp; road with mask-rcnn &amp; unet model 
 
 # Usage
-Run main_code.py, and result will be created to path: input_image_path/image_name/result/
+Run main_code.py, and result will be created to path:
+	
+	input_image_path/image_name/result/
 
 #### |--Change Weight:
 	--config/UNet.py: "cfg = {'weights': 'your UNET weight'}"
