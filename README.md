@@ -4,12 +4,14 @@ This is a project for detecting building &amp; road with mask-rcnn &amp; unet mo
 
 For calculating geojson coordinate, need input ".tif" file with correct "crs" value.
 
+
 # Package
 This project only support python>=3.8.
 
 Requirements file is in the requirements.txt
 
 	pip install -r requirements.txt
+
 
 # Usage
 Run main_code.py, and result will be created to path:
@@ -29,10 +31,12 @@ mask_rcnn.py & unet.py:
 
 	For detecing and predict
 
+
 # Folder:
 | -- src/: Model utils code
 
 | -- src/cocojson/: COCOJson create tools 
+
 
 # References
 COCO create tools: https://github.com/waspinator/pycococreator
