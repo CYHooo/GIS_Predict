@@ -108,11 +108,6 @@ def main(img_path: os.path):
     save_img(img_path, building_masks, road_masks, cfg["pred_path"], unit_pixel)
     
     status = print_status(status + 10, [0, 3])  # 10~13
-    # remove None rcnn infos
-    # mask_save_rcnn = rcnn_infos.copy()
-    # geojson_rcnn = rcnn_infos.copy()
-    # mask_save_rcnn = [[info for info in infos if info is not None] for infos in rcnn_infos]
-    # mask_save_rcnn = [x for x in rcnn_infos if x]
 
     # print status for sending to js
     status = print_status(status + 30, [0, 3])  # 10~13 + 30 + 0~3 = 40~46
