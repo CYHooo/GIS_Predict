@@ -1,23 +1,6 @@
 '''
     python version: 3.8.10 (python >= 3.8)
 
-    python package:    
-        tensorflow == 2.10.0 (cuda==11.5,cudnn==8.3.1)
-        silence_tensorflow
-        numpy == 1.20.0
-
-        opencv-python == 4.1.2.30 (opencv < 4.2.0)
-        scikit-image == 0.16.2 (scikit-image < 0.19.0)
-        scipy == 1.10.0
-        pillow == 9.3.0
-
-        tqdm
-
-        psutil
-        rasterio
-        pycocotools-windows
-        geojson
-        rdp
 '''
 
 # ------------------ basic package ------------------------- #
@@ -150,9 +133,5 @@ def main(img_path: os.path):
 
 
 if __name__ == "__main__":
-    # path = "D:\\data\\광주\\crop\\TEST_A_15.tif"
-    # path = "img\\orthophoto-2.tif"
-    # path = "img\\02_05_TEST.tif"
-    path = 'img\\test_1.tif'
-    # path = sys.argv[1]
+    path = 'path\\your_image.tif' # for make result folder correctly, need use '\\' before image
     main(path)
