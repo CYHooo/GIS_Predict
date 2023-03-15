@@ -6,15 +6,18 @@ Run main_code.py, and result will be created to path:
 	
 	input_image_path/image_name/result/
 
-#### |--Change Weight:
-	--config/UNet.py: "cfg = {'weights': 'your UNET weight'}"
-	--config/Mask_RCNN.py: "cfg = {'weights': 'your MASK-RCNN weight'}"
+#### |-- Change Weight:
+	config/UNet.py: "cfg = {'weights': 'your UNET weight'}"
+	config/Mask_RCNN.py: "cfg = {'weights': 'your MASK-RCNN weight'}"
 
-## Code:
-#### |-- Main_code.py
-Main code, need input your_image_path
-#### |-- mask_rcnn.py & unet.py
-Detecing model
+#### |-- Code:
+Main_code.py: 
+    
+	Main code need input your_image_path
+
+mask_rcnn.py & unet.py:
+
+	For detecing and predict
 
 # Folder:
 src/: Model utils code
