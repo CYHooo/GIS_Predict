@@ -1,0 +1,12 @@
+tensorflow==2.10.0
+opencv-python==4.1.2.30
+silence_tensorflow==1.2.1
+scikit-image==0.16.2
+scipy==1.10.0
+pillow==9.3.0
+psutil==5.9.4
+rasterio==1.3.4
+rdp==0.8
+geojson==2.5.0
+pycocotools-windows==2.0.0.2
+numpy==1.20.0
