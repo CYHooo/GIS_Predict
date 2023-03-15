@@ -1,20 +1,27 @@
 # Building-Road-AI-Detecting
 This is a project for detecting building &amp; road with mask-rcnn &amp; unet model 
 
-# Uage
-	Run main_code.py, and result will be created to path: input_image_path/image_name/result/
+# Usage
+Run main_code.py, and result will be created to path: input_image_path/image_name/result/
 
-# Folder
-	--src/: Model utils code
-	--src/cocojson/: COCOJson create tools 
-	
-# Main_code.py
-	--Input image's path
+#### |--Change Weight:
+	--config/UNet.py: "cfg = {'weights': 'your UNET weight'}"
+	--config/Mask_RCNN.py: "cfg = {'weights': 'your MASK-RCNN weight'}"
 
-# mask_rcnn.py & unet.py
-	--Detecing model
+## Code:
+#### |-- Main_code.py
+Main code, need input your_image_path
+#### |-- mask_rcnn.py & unet.py
+Detecing model
+
+# Folder:
+src/: Model utils code
+
+src/cocojson/: COCOJson create tools 
 
 # References
-	--COCO create tools: https://github.com/waspinator/pycococreator
-	--Mask-RCNN: https://github.com/bubbliiiing/mask-rcnn-tf2
-	--Unet: https://github.com/bubbliiiing/unet-tf2
+COCO create tools: https://github.com/waspinator/pycococreator
+
+Mask-RCNN: https://github.com/bubbliiiing/mask-rcnn-tf2
+
+Unet: https://github.com/bubbliiiing/unet-tf2
