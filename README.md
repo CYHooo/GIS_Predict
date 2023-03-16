@@ -36,8 +36,6 @@ mask_rcnn.py & unet.py:
 | -- src/cocojson/: COCOJson create tools 
 
 
-# Example
-![Alt](https://github.com/NoE-NoW/Komapper-AI/blob/main/example/orthophoto-2_resize.png)
 
 
 # References
