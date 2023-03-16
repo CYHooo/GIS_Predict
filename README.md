@@ -39,7 +39,7 @@ mask_rcnn.py & unet.py:
 # Example
 <img src="https://github.com/NoE-NoW/Komapper-AI/blob/main/example/orthophoto-2_resize.png" alt="Original" sytle="height:400px width: 200px;">
 <img src="https://github.com/NoE-NoW/Komapper-AI/blob/main/example/orthophoto-2_mask_resize.png" alt="Mask" sytle="height:400px width: 200px;">
-
+<img src="https://github.com/NoE-NoW/Komapper-AI/blob/main/example/orthophoto-2_blend_resize.png" alt="Mask" sytle="height:400px width: 200px;">
 
 # References
 COCO create tools: https://github.com/waspinator/pycococreator
