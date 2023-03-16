@@ -39,10 +39,6 @@ def format_coor(contours, position, image_shape):
 
 def split_class(pred, label_idx, colors, position):
     """
-    @23/03/12 Yeongho:
-        Update for crop images
-        add format_coor() func. (line 83)
-        :param pred: crop masks images
         
     first, split each class in predicted image, and then split each object in the same class and save to dictionary for each.
 
