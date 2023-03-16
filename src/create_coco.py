@@ -52,16 +52,9 @@ def create_json(img_path : os.path, rcnn_infos : list, road_masks : list, classe
     information of object is split each.
 
     :param img_path: original image path
-
-    @23/03/11 Yeongho:
-    change rcnn_info & road_mask
-    add 2 loop for each crop mask info
-    add positions value
     :param rcnn_infos: a list for each crop image's mask rcnn info
     :param road_masks: a list for each crop image;s unet result mask
     :param postions: input mask's position (ie: [[0,0],[1,0],...]), for format road masks' xy coordinates
-
-
     :return: data formed json format that is had image path, each detected object's class name,
                                                  each detected object's position and information for original image.
     """
