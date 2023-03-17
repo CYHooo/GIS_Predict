@@ -16,11 +16,11 @@ Run main_code.py, and result will be created to path:
 	
 	input_image_path/image_name/result/
 
-#### / Change Weight
+#### * Change Weight
 	config/UNet.py: "cfg = {'weights': 'your UNET weight'}"
 	config/Mask_RCNN.py: "cfg = {'weights': 'your MASK-RCNN weight'}"
 
-#### / Main Code
+#### * Main Code
 Main_code.py: 
     
 	Main code need input your_image_path
@@ -37,7 +37,7 @@ mask_rcnn.py & unet.py:
 
 
 # Example
-<img src="https://github.com/NoE-NoW/Komapper-AI/blob/main/example/orthophoto-2_resize.png https://github.com/NoE-NoW/Komapper-AI/blob/main/example/orthophoto-2_blend_resize.png https://github.com/NoE-NoW/Komapper-AI/blob/main/example/orthophoto-2_mask_resize.png" alt="Original" sytle="height:400px width: 200px;">
+<img src="https://github.com/NoE-NoW/Komapper-AI/blob/main/example/orthophoto-2_resize.png" alt="Original" sytle="height:400px width: 200px;">
 <img src="https://github.com/NoE-NoW/Komapper-AI/blob/main/example/orthophoto-2_blend_resize.png" alt="Mask" sytle="height:400px width: 200px;">
 <img src="https://github.com/NoE-NoW/Komapper-AI/blob/main/example/orthophoto-2_mask_resize.png" alt="Mask" sytle="height:400px width: 200px;">
 
