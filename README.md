@@ -9,7 +9,10 @@ This project only support python>=3.8.
 Requirements file is in the requirements.txt
 
 	pip install -r requirements.txt
+The package 'gdal' need use:
 
+	conda install -c conda-forge gdal==3.6.0
+can fix with 'rasterio==1.3.4'
 
 # Usage
 Run main_code.py, and result will be created to path:
