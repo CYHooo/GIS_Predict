@@ -11,8 +11,12 @@ Requirements file is in the requirements.txt
 	pip install -r requirements.txt
 The package 'gdal' need use:
 
-	conda install -c conda-forge gdal==3.6.0
-can fix with 'rasterio==1.3.4'
+	conda install -c conda-forge gdal==3.0.2
+If want to fix two packages 
+
+	rasterio==1.3.4 & gdal==3.0.2
+	
+Need use miniconda got a new env for rasterio <PROJ_LIB>
 
 # Usage
 Run main_code.py, and result will be created to path:
