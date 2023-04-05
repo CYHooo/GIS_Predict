@@ -23,11 +23,11 @@ Run main_code.py, and result will be created to path:
 	
 	input_image_path/image_name/result/
 
-#### * Change Weight
+#### > Change Weight
 	config/UNet.py: "cfg = {'weights': 'your UNET weight'}"
 	config/Mask_RCNN.py: "cfg = {'weights': 'your MASK-RCNN weight'}"
 
-#### * Main Code
+#### > Main Code
 Main_code.py: 
     
 	Main code need input your_image_path
@@ -38,9 +38,9 @@ mask_rcnn.py & unet.py:
 
 
 # Folder
-| -- src/: Model utils code
+> src/: Model utils code
 
-| -- src/cocojson/: COCOJson create tools 
+> src/cocojson/: COCOJson create tools 
 
 
 # Example
