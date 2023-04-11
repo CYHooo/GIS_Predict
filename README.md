@@ -9,18 +9,25 @@ This project only support python>=3.8.
 Requirements file is in the requirements.txt
 
 	pip install -r requirements.txt
+The package 'gdal' need use:
 
+	conda install -c conda-forge gdal==3.0.2
+If want to fix two packages 
+
+	rasterio==1.3.4 & gdal==3.0.2
+	
+Need use miniconda got a new env for rasterio <PROJ_LIB>
 
 # Usage
 Run main_code.py, and result will be created to path:
 	
 	input_image_path/image_name/result/
 
-#### * Change Weight
+#### > Change Weight
 	config/UNet.py: "cfg = {'weights': 'your UNET weight'}"
 	config/Mask_RCNN.py: "cfg = {'weights': 'your MASK-RCNN weight'}"
 
-#### * Main Code
+#### > Main Code
 Main_code.py: 
     
 	Main code need input your_image_path
@@ -31,9 +38,9 @@ mask_rcnn.py & unet.py:
 
 
 # Folder
-| -- src/: Model utils code
+> src/: Model utils code
 
-| -- src/cocojson/: COCOJson create tools 
+> src/cocojson/: COCOJson create tools 
 
 
 # Example

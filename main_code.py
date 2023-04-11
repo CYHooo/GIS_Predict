@@ -9,6 +9,7 @@ import datetime
 import time
 
 os.environ["OPENCV_IO_MAX_IMAGE_PIXELS"] = pow(2, 40).__str__()
+os.environ["PROJ_LIB"] = "C:\\Users\\CYH\\miniconda3\\envs\\prj\\Lib\\site-packages\\rasterio\\proj_data"
 
 warnings.filterwarnings(action="ignore")
 
