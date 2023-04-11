@@ -3,18 +3,19 @@
 
 # -------------------------- basic package ------------------------------ #
 import os
+os.environ["PROJ_LIB"] = "C:\\Users\\jhyoon\\miniconda3\\envs\\dlm\\Lib\\site-packages\\rasterio\\proj_data"
+
 import re
 
 import geojson
 import numpy as np
+
 # -------------------------- geometry package ------------------------------ #
 import rasterio
 from rasterio.warp import calculate_default_transform, reproject, Resampling
 
 # -------------------------- other file package ------------------------------ #
 from src.save_anno import load_data
-
-# os.environ["PROJ_LIB"] = "D:\\miniconda3\\envs\\dlm\\lib\\site-packages\\rasterio\\proj_data"
 
 # -------------------------- visualize package ------------------------------ #
 import matplotlib.pyplot as plt
@@ -157,12 +158,12 @@ def make_geojson(vertices, result_path, epsg: str):
             "geojson": achive
             }
 
-def tif_img(json_data, save_path):
+def tif_img(json_data, img_path, save_path):
     """
     convert polygon of image coordinates to world coordinate about epsg in original input tif.
 
     :param json_data: polygon data formed coco json format of image coordinate system that is detected by AI.
-    :param save_path: path to save geojson file.
+    :param img_path: image path.
     :return: None
     :exception: if you install PostGIS or other program of OSGEO,
                 you should check the environment variable for PROJ_LIB(PROJ_DATA - in more recent version, change the name to this.)
@@ -170,12 +171,12 @@ def tif_img(json_data, save_path):
     # load data in json data.
     annotations, imgs, classes, _ = load_data(json_data)
 
-    target_ids = [1,2,3,4] # building, vinyl house, paved road, unpaved road
+    target_ids = [1, 2, 3, 4]  # building, vinyl house, paved road, unpaved road
     result = []
-    # i bring only building, paved road, unpaved road if you want to bring other class, you should change the number of class.
+    # I bring only building, paved road, unpaved road if you want to bring other class, you should change the number of class.
     for class_number in target_ids:
         anno_by_cls = [[a for a in anno if a["category_id"] == class_number] for anno in annotations]
-        vertices, img_epsg = convert_img_coord_to_crs(anno_by_cls, save_path.rsplit("\\", 1)[0], imgs)
+        vertices, img_epsg = convert_img_coord_to_crs(anno_by_cls, img_path, imgs)
 
         # save 2 files that geojson for original crs, and transformed crs.
         result.append(make_geojson(vertices, save_path + f'result_{classes[class_number - 1]}.geojson', img_epsg))

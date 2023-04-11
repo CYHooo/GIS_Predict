@@ -45,10 +45,8 @@ def load_data(data):
     curr_id = anno[0]["image_id"]
 
     for a in anno:
-        
         # segmentation 각 polygon vertices [x,y]로 묶기
         a["segmentation"] = [[[a["segmentation"][j][i], a["segmentation"][j][i + 1]] for i in range(0, len(a["segmentation"][j]), 2)] for j in range(len(a["segmentation"]))]
-        
 
         # ----------- image id를 통한 list 분리 ---------- #
         if a['image_id'] != curr_id:

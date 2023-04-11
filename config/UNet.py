@@ -1,5 +1,5 @@
 cfg = {
-    "weights": 'D:/msrcnn/AI_code_230308/AI-Detection/weight/ep200_road_best_weights.h5',
+    "weights": 'C:/Company/AI-Detection/Lastmile-AI/weight/230306_ep200_road_best_weights.h5',
     "classes": ["paved_road", "unpaved_road"],
     "backbone": "resnet50",
     "input_shape": [1024, 1024],

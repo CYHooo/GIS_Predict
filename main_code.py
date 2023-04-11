@@ -1,11 +1,12 @@
-'''
+"""
     python version: 3.8.10 (python >= 3.8)
-
-'''
+"""
 
 # ------------------ basic package ------------------------- #
 import os
 import warnings
+import datetime
+import time
 
 os.environ["OPENCV_IO_MAX_IMAGE_PIXELS"] = pow(2, 40).__str__()
 
@@ -13,8 +14,8 @@ warnings.filterwarnings(action="ignore")
 
 # ------------------ tensorflow ---------------------------- #
 from silence_tensorflow import silence_tensorflow
-
 silence_tensorflow()
+
 import tensorflow as tf
 
 # ------------------ CV Package ---------------------------- #
@@ -40,10 +41,9 @@ gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
 for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
 
-
 '''
-class     : building,       vinyl house,   paved road,     unpaved road,
-BGR-color : [244,67,54],    [233,30,99],   [64,64,215],    [30,215,124],
+class     : building,       vinyl house,   paved road,     unpaved road
+BGR-color : [244,67,54],    [233,30,99],   [64,64,215],    [30,215,124]
 '''
 
 
@@ -58,6 +58,8 @@ def main(img_path: os.path):
                 but you cannot convert GEO polygon because there is no coordinate system in png or jpg.
     """
 
+    start = datetime.datetime.now()
+
     # initial setting
     cfg = _init(img_path)
     _setting(cfg=cfg)
@@ -70,15 +72,13 @@ def main(img_path: os.path):
     # UNet is detection model for road
     uNet = Unet()
 
-    # img = Image.open(os.path.join(cfg["base_dir"], cfg["img_name"]) + cfg["ext"])
-
     # check image's GSD value
     unit_pixel = check_gsd(os.path.join(cfg["base_dir"], cfg["img_name"]) + cfg["ext"])
 
     # format gsd to 0.25m
     imgs, positions = format_gsd(unit_pixel, os.path.join(cfg["base_dir"], cfg["img_name"]) + cfg["ext"])
-    
-    # list for crop image's predict info (if don't need to crop image, info still append to list )
+
+    # list for crop image's predict info (if you don't need to crop image, info still append to list )
     rcnn_infos = []
     road_masks = []
     building_masks = []
@@ -88,16 +88,12 @@ def main(img_path: os.path):
         bbox_img, building_mask, colors, rcnn_info = mask_rcnn.detect_image(img, position)
 
         # print status for sending to js
-        
 
         # detecting for road
         total_mask, road_mask, road_color = uNet.detect_image(img, building_mask)
 
         # merge colors for building and road
-        colors.extend(road_color)
-
-        # merge class_name and color correctly
-        classes = {label: color for label, color in zip(cfg["class_name"], colors)}
+        colors.append(road_color)
 
         # got all crop image predict result & info
         road_masks.append(road_mask)
@@ -106,7 +102,7 @@ def main(img_path: os.path):
 
     # save predict result
     save_img(img_path, building_masks, road_masks, cfg["pred_path"], unit_pixel)
-    
+
     status = print_status(status + 10, [0, 3])  # 10~13
 
     # print status for sending to js
@@ -117,16 +113,18 @@ def main(img_path: os.path):
     classes = {'building': [54, 67, 244], 'vinyl house': [99, 30, 233], 'paved road': [215, 64, 64], 'unpaved road': [124, 215, 30]}
     """
     # create some data formed by json format
-    json_data = create_json(img_path, rcnn_infos, road_masks, classes, positions)
+    json_data = create_json(img_path, rcnn_infos, road_masks, colors, positions)
 
     # print status for sending to js
     print_status(status + 45, [5, 8])  # 40~46 + 45 + 5~8 = 90~99
 
     # convert from data formed json format to geojson
-    tif_img(json_data, cfg["geo_path"])
-   
+    tif_img(json_data, cfg["base_dir"], cfg["geo_path"])
 
+    finish = (start - datetime.datetime.now()).seconds
+    print(f"during time : {finish} s")
 
 if __name__ == "__main__":
-    path = 'path\\your_image.tif' # for make result folder correctly, need use '\\' before image
+    path = "C:/Company/AI-Detection/data/37607098/split_result/tiled_1.tif"
+    # path = "C:/Company/AI-Detection/data/37607098/(B060)정사영상_2021_37607098.tif"  # for make result folder correctly, need use '\\' before image
     main(path)

@@ -1,6 +1,6 @@
 import colorsys
 import os
-
+import sys
 import cv2
 import numpy as np
 from PIL import Image
@@ -13,6 +13,7 @@ from src.utils.utils_bbox import postprocess
 from src.cocojson.pycococreatortools.pycococreatortools import resize_binary_mask, binary_mask_to_polygon
 
 from config.Mask_RCNN import cfg, colors
+from config.common import DetransformCoord
 
 class MASK_RCNN(object):
     _defaults = {
@@ -85,6 +86,8 @@ class MASK_RCNN(object):
             RPN_ANCHOR_SCALES = self.RPN_ANCHOR_SCALES
             IMAGE_MAX_DIM = self.IMAGE_MAX_DIM
 
+        self.DetransformCoord = DetransformCoord()
+
         self.config = InferenceConfig()
         self.generate()
 
@@ -101,11 +104,6 @@ class MASK_RCNN(object):
         self.model = get_predict_model(self.config)
         self.model.load_weights(self.model_path, by_name=True)
 
-    # ---------------------------------------------------#
-    #   test
-    # ---------------------------------------------------#
-
-            
 
     def detect_image(self, image, position):
 
@@ -115,38 +113,9 @@ class MASK_RCNN(object):
 
             !! mask-rcnn.py can not save building_mask.png, need debugging !!
         '''
-        
-        def _format_coor(masks_coor, position, masks_shape):
-            '''
-            @23/03/11 Yeongho:
-            :param masks_coor: crop predict mask info (type: np.bool_)
-            :param positon: position from original image
-            :param masks_shape: input mask's shape
-            :return: building predcit result xy coordinate from original image's coordinate
-            '''
-            position_x, position_y = position[1], position[0]
-            position_coor = []
-            
-            if masks_coor is None:
-                return None
-            
-            for i in range(masks_coor.shape[-1]):
-                crop_coor = masks_coor[:,:,i].astype('uint8')
-                crop_coor = resize_binary_mask(crop_coor,masks_shape)
-                crop_coor = binary_mask_to_polygon(crop_coor, tolerance=2)
 
-                coor = [[crop_coor[0][a+1], crop_coor[0][a]] for a in range(0,len(crop_coor[0]),2)]
-
-                x = np.array(coor)[:,1] + position_x * image_shape[1]
-                y = np.array(coor)[:,0] + position_y * image_shape[0]
-                output = [val for pair in zip(x,y) for val in pair]
-
-                position_coor.append(output)
-
-            return  position_coor
-        
         ##------------ move color info at first ------------##
-        target_ids = [1, 2]
+        target_ids = [1]
         colors = [self.colors[t_id][::-1].tolist() for t_id in target_ids]
         ##--------------------------------------------------##
 
@@ -167,9 +136,8 @@ class MASK_RCNN(object):
         box_thres, class_thres, class_ids, masks_arg, masks_sigmoid = postprocess(detections[0], mrcnn_mask[0], image_shape, image_data[0].shape, windows[0])
         masks_save = masks_sigmoid
 
-        masks_sigmoid = _format_coor(masks_sigmoid, position, image_shape)
+        masks_sigmoid = self.DetransformCoord.mask2contour(masks_sigmoid, position, image_shape)
 
-        # np.save(r'D:\msrcnn\AI_code_230308\AI-Detection\img\02_05_TEST\save.npy', masks_sigmoid)
         rcnn_info = [
                 box_thres, 
                 class_thres, 
@@ -190,7 +158,7 @@ class MASK_RCNN(object):
         # ----------------------------------------------------------------------#
         masks_class = masks_save * (class_ids[None, None, :] + 1)
         masks_class = masks_class.reshape(-1, masks_class.shape[-1])
-        masks_class = np.reshape(masks_class[np.arange(masks_class.shape[0]), np.reshape(masks_arg, [-1])], [image_shape[0], image_shape[1]]) ## TODO: ????
+        masks_class = np.reshape(masks_class[np.arange(masks_class.shape[0]), np.reshape(masks_arg, [-1])], [image_shape[0], image_shape[1]])
         
 
         # 0 index = background(black)

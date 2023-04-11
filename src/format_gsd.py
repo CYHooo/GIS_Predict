@@ -220,7 +220,7 @@ def save_img(img_path, building_masks, road_masks, save_path, unit_pixel):
     img = np.asarray(Image.open(img_path))
     
     if img.shape[0] < size[0] and img.shape[1] < size[1]:
-        mask = Image.fromarray(road_mask[0] + building_mask[0])
+        mask = Image.fromarray(road_masks[0] + building_masks[0])
         mask.save(os.path.join(save_path, img_name + '_mask.png'))
         return None
 
@@ -239,7 +239,6 @@ def save_img(img_path, building_masks, road_masks, save_path, unit_pixel):
         if x_pos == img.shape[1]:
             y_pos += size[0]
             x_pos = 0
-
 
     mask_save_pil = Image.fromarray(mask_save)
     mask_save_pil.save(os.path.join(save_path + img_name + '_mask.png'))
