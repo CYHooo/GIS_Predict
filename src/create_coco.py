@@ -56,7 +56,7 @@ def create_json(img_path : os.path, rcnn_infos : list, road_masks : list, colors
         for j in range(len(class_ids[i])):
             class_id = int(class_ids[i][j])
             # contour = masks_sigmoid[:,:,i]
-            contour = masks_sigmoids[i][j]
+            contour = masks_sigmoids[i][j]  # array to list
             category_info = {'id': class_id, 'is_crowd': 0}
             score = class_thres[i][j]
             annotation_info = pycococreatortools.create_annotation_info(annotation_id, image_id, category_info, contour, score, image_size=img_size)
@@ -64,11 +64,11 @@ def create_json(img_path : os.path, rcnn_infos : list, road_masks : list, colors
                 output["annotations"].append(annotation_info)
                 annotation_id += 1
         
-    detransformCoord = DetransformCoord()
+    compose_coordinate = ComposeCoordinate()
     # in mask, split each object by colors
     for road_mask, position in zip(road_masks, positions):
         label_idx = [3, 4]
-        divided_obj = split_class(road_mask, label_idx, colors=colors[1], position=position, DetransformCoord=detransformCoord)
+        divided_obj = split_class(road_mask, label_idx, colors=colors[1], position=position, compose_coordinate=compose_coordinate)
 
         # iteration about split object to make json for paved road & unpaved road
         for obj in divided_obj:
@@ -77,8 +77,8 @@ def create_json(img_path : os.path, rcnn_infos : list, road_masks : list, colors
             category_info = {'id': class_id, 'is_crowd': 0}
 
             # rdp algorithm is also organization the surroundings of objects but, this is arrangement from the perspective of polygons
-            # epsilon = DynamicEpsilonbyContourarea(contour, class_id)
-            # contour = rdp_algo(contour, epsilon=epsilon)
+            epsilon = DynamicEpsilonbyContourarea(contour, class_id)
+            contour = rdp_algo(contour, epsilon=epsilon)
             annotation_info = create_coco_annotation(annotation_id, image_id, category_info, contour, is_crowd=0)
 
             if annotation_info is not None:

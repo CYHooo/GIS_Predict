@@ -1,6 +1,6 @@
 ############################################
 cfg = {
-    "weights": 'D:/msrcnn/AI_code_230308/AI-Detection/weight/ep200_building_best_weights.h5',
+    "weights": 'C:/Company/AI-Detection/Lastmile-AI/weight/ep200_building_best_weights.h5',
     "classes": ["building", "vinyl_house"],
     "conf": 0.5,
     "nms_iou": 0.3,

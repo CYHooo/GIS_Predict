@@ -126,6 +126,6 @@ def main(img_path: os.path):
     print(f"during time : {finish} s")
 
 if __name__ == "__main__":
-    path = "C:/Company/AI-Detection/data/37607098/split_result/tiled_1.tif"
-    # path = "C:/Company/AI-Detection/data/37607098/(B060)정사영상_2021_37607098.tif"  # for make result folder correctly, need use '\\' before image
+    path = "C:/Company/AI-Detection/data/37607098/split_result/tiled_3.tif"
+    # path = "C:/Company/AI-Detection/data/37607098/(B060)정사영상_2021_37607098.tif"  # 85302 s
     main(path)

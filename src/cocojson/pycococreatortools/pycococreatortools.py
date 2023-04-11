@@ -58,7 +58,7 @@ def binary_mask_to_polygon(binary_mask, tolerance=0):
             segmentation = [0 if i < 0 else i for i in segmentation]
             polygons.append(segmentation)
     else:
-        contours = max(contours,key=len)
+        contours = max(contours,key=len)  # TODO: 만약 도넛 모양이라면 안쪽은 비워져야 할텐데
         contours = np.array(contours)[np.newaxis,:,:]
         for contour in contours:
             contour = close_contour(contour)
@@ -125,7 +125,7 @@ def create_annotation_info(annotation_id, image_id, category_info, binary_mask, 
         "image_id": image_id,
         "category_id": category_info["id"]+1,
         "iscrowd": is_crowd,
-        "segmentation": [np.array(segmentation)],
+        "segmentation": [segmentation],
         "score": score.tolist()
     } 
 

@@ -13,7 +13,7 @@ from src.utils.utils_bbox import postprocess
 from src.cocojson.pycococreatortools.pycococreatortools import resize_binary_mask, binary_mask_to_polygon
 
 from config.Mask_RCNN import cfg, colors
-from config.common import DetransformCoord
+from config.common import ComposeCoordinate
 
 class MASK_RCNN(object):
     _defaults = {
@@ -86,7 +86,7 @@ class MASK_RCNN(object):
             RPN_ANCHOR_SCALES = self.RPN_ANCHOR_SCALES
             IMAGE_MAX_DIM = self.IMAGE_MAX_DIM
 
-        self.DetransformCoord = DetransformCoord()
+        self.compose_coordinate = ComposeCoordinate()
 
         self.config = InferenceConfig()
         self.generate()
@@ -136,7 +136,7 @@ class MASK_RCNN(object):
         box_thres, class_thres, class_ids, masks_arg, masks_sigmoid = postprocess(detections[0], mrcnn_mask[0], image_shape, image_data[0].shape, windows[0])
         masks_save = masks_sigmoid
 
-        masks_sigmoid = self.DetransformCoord.mask2contour(masks_sigmoid, position, image_shape)
+        masks_sigmoid = self.compose_coordinate.mask2contour(masks_sigmoid, position, image_shape)
 
         rcnn_info = [
                 box_thres, 

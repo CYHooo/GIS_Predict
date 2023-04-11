@@ -10,21 +10,14 @@ from src.cocojson.pycococreatortools.pycococreatortools import binary_mask_to_po
 # ------------------ type of variable ------------------------- #
 from typing import List, Dict
 
-class DetransformCoord:
+class ComposeCoordinate:
     def __init__(self):
         self.prev_pos = np.array([0, 0])
         self.pos_shape = np.array([0, 0])
         self.prev_pos_shape = np.array([0, 0])
 
     def contour2contour(self, contours, position, image_shape):
-        position_y, position_x = position
         position_coor = []
-
-        if self.prev_pos[1] == position_y:
-            self.pos_shape[0] += self.prev_pos_shape[0]
-        else:
-            self.pos_shape[1] += self.prev_pos_shape[1]
-            self.pos_shape[0] = 0
 
         for i in range(len(contours)):
             if contours[i] is None:
@@ -46,42 +39,33 @@ class DetransformCoord:
         :param masks_shape: input mask's shape  (h,w)
         :return: building predict result xy coordinate from original image's coordinate
         '''
-        position_y, position_x = position
         position_coor = []
+
+        self.position_move(position)
+
+        if masks_coor is None:
+            return None
+
+        for i in range(masks_coor.shape[-1]):
+            crop_coor = cv2.resize(masks_coor[:, :, i].astype(np.uint8) * 255, masks_shape[::-1])
+            crop_coor = binary_mask_to_polygon(crop_coor, tolerance=2)  # (x,y)
+
+            output = (np.array(crop_coor).reshape(-1, 2) + self.pos_shape).reshape(1, -1).tolist()[0]  # x,y
+            position_coor.append(output)
+
+        self.prev_pos = position[::-1]
+        self.prev_pos_shape = masks_shape[::-1]
+
+        return position_coor
+
+    def position_move(self, position):
+        position_y, position_x = position
 
         if self.prev_pos[1] == position_y:
             self.pos_shape[0] += self.prev_pos_shape[0]
         else:
             self.pos_shape[1] += self.prev_pos_shape[1]
             self.pos_shape[0] = 0
-
-        if masks_coor is None:
-            return None
-
-        for i in range(masks_coor.shape[-1]):
-            # crop_coor = masks_coor[:, :, i].astype('uint8')
-            # crop_coor = resize_binary_mask(masks_coor[:, :, i], masks_shape)  # TODO: np.uint로 바꾸고, 다시 bool로 바꾸는 이유가?
-            crop_coor = cv2.resize(masks_coor[:, :, i].astype(np.uint8) * 255, masks_shape[::-1])
-            crop_coor = binary_mask_to_polygon(crop_coor, tolerance=2)  # (x,y) # TODO: 만약 list가 2개인 결과가 나올 경우는?
-
-            # coor = [[crop_coor[0][a + 1], crop_coor[0][a]] for a in range(0, len(crop_coor[0]), 2)]
-
-            # x = np.array(coor)[:, 1] + position_x * masks_shape[1]
-            # y = np.array(coor)[:, 0] + position_y * masks_shape[0]
-            # output = [val for pair in zip(x, y) for val in pair]
-            output = (np.array(crop_coor).reshape(-1, 2) + self.pos_shape).reshape(1, -1).tolist()[0]  # x,y # TODO: 간편화
-            position_coor.append(output)
-
-            """
-            m = np.zeros((2880, 2319), dtype=np.uint8); m = cv2.line(m, (0,999*2),(10000,999*2), color=255); m = cv2.line(m, (0,999),(10000,999), color=255); m = cv2.line(m, (999,0), (999, 10000), color=255); m = cv2.line(m, (999*2,0), (999*2, 10000), color=255)
-            m = cv2.fillConvexPoly(m, np.array([output]).astype(np.int32).reshape(-1,2), color=255)
-            import matplotlib.pyplot as plt; plt.imshow(m, cmap="gray"); plt.show()
-            """
-
-        self.prev_pos = position[::-1]
-        self.prev_pos_shape = masks_shape[::-1]
-
-        return position_coor
 
 def DynamicEpsilonbyContourarea(contour, class_id):
     """

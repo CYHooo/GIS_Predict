@@ -3,7 +3,7 @@ import numpy as np
 
 from config.common import area_threshold, DynamicAreaThresholdbyImageshape
 
-def split_class(pred, label_idx, colors, position, DetransformCoord):
+def split_class(pred, label_idx, colors, position, compose_coordinate):
     """
     first, split each class in predicted image, and then split each object in the same class and save to dictionary for each.
 
@@ -13,6 +13,10 @@ def split_class(pred, label_idx, colors, position, DetransformCoord):
     :return: list of polygon for object split by each color 
     """
     divided_obj = []
+
+    # at this situation, this algorithm iterate twice for each position. so i send out of the position move algorithm
+    compose_coordinate.position_move(position)
+
     # should split the image for each color, so iterate using colors
     for i in range(len(colors)):
         color = np.array(colors[i])
@@ -34,9 +38,9 @@ def split_class(pred, label_idx, colors, position, DetransformCoord):
         # CCOMP hierarchy = [Next, Previous, inner contour, outer contour]
         contours, hierarchy = cv2.findContours(gray, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_TC89_L1)
 
-        # area_threshold = DynamicAreaThresholdbyImageshape(gray.shape[:2], label_idx[i])
+        area_threshold = DynamicAreaThresholdbyImageshape(gray.shape[:2], label_idx[i])
 
-        contours = DetransformCoord.contour2contour(contours, position, pred.shape)
+        contours = compose_coordinate.contour2contour(contours, position, pred.shape)
 
         if len(contours) > 0 and hierarchy is not None:
             # format contours' coordinates, xy coordinate is from original image's coordiante
