@@ -114,7 +114,6 @@ def create_annotation_info(annotation_id, image_id, category_info, binary_mask, 
         output = [(np.array(seg).reshape(-1, 2) + deformer.pos_shape).reshape(1, -1).tolist()[0] for seg in segmentation]
         deformer.prev_pos = position[::-1]
         deformer.prev_pos_shape = image_size
-        # segmentation = binary_mask
         if not segmentation:
             return None
         

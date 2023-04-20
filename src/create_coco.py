@@ -16,8 +16,6 @@ from typing import Dict
 def create_json(crop : Image, road_mask : Image, rcnn_infos : list, colors : list, position: tuple, 
                 deformer, annotation_id, image_id):
     """
-    <<road_masks : list, >>
-    <<img_path : os.path, >>
     convert from detected mask to json with Polygon of object that detected by AI
     information of object is split each.
 
@@ -33,12 +31,7 @@ def create_json(crop : Image, road_mask : Image, rcnn_infos : list, colors : lis
 
     ## building & vinyl house info
     box_thres, class_thres, class_ids, masks_args, masks_sigmoids = [], [], [], [], []
-    # for rcnn_info in rcnn_infos:
-    #     box_thres.append(rcnn_info[0])
-    #     class_thres.append(rcnn_info[1])
-    #     class_ids.append(rcnn_info[2])
-    #     masks_args.append(rcnn_info[3])
-    #     masks_sigmoids.append(rcnn_info[4])
+
 
     box_thres.append(rcnn_infos[0])
     class_thres.append(rcnn_infos[1])
@@ -67,7 +60,6 @@ def create_json(crop : Image, road_mask : Image, rcnn_infos : list, colors : lis
    
     
     # in mask, split each object by colors
-    # for road_mask, position in zip(road_mask, positions):
     label_idx = [3, 4]
     divided_obj = split_class(road_mask, label_idx, colors=colors[1], position=position, deformer=deformer)
 
