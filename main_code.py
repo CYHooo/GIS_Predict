@@ -84,8 +84,7 @@ def main(img_path: os.path):
     # format gsd to 0.25m
     imgs, positions = format_gsd(unit_pixel, os.path.join(cfg["base_dir"], cfg["img_name"]) + cfg["ext"])
 
-    # list for crop image's predict info (if you don't need to crop image, info still append to list )
-    rcnn_infos = []
+    # list for crop image's predict masks (if you don't need to crop image, info still append to list )
     road_masks = []
     building_masks = []
 
@@ -118,6 +117,7 @@ def main(img_path: os.path):
         # get all crop image predict result mask
         road_masks.append(road_mask)
         building_masks.append(building_mask)
+        
         # annotations id
         annotation_id = ann_id
 
