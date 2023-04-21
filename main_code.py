@@ -36,7 +36,7 @@ from src.format_gsd import format_gsd, check_gsd, save_img
 from src.cocojson.pycococreatortools import pycococreatortools
 
 # CONFIG
-from config.common import _init, _setting, print_status, ComposeCoordinate
+from config.common import _init, _setting, callbackStatus, ComposeCoordinate
 from config.common import *
 
 # whether to use gpu
@@ -67,15 +67,17 @@ def main(img_path: os.path):
     cfg = _init(img_path)
     _setting(cfg=cfg)
 
+    cb = callbackStatus("status")
+
     # print status for sending to js
-    status = print_status(cfg["status"], [0, 0])
+    cb.print_status(cfg["status"], [0, 0])
 
     # mask_rcnn is detection model for building
     mask_rcnn = MASK_RCNN()
     # UNet is detection model for road
     uNet = Unet()
 
-    ## coor init
+    # coor init
     deformer = ComposeCoordinate()
 
     # check image's GSD value
@@ -101,6 +103,8 @@ def main(img_path: os.path):
     image_info = pycococreatortools.create_image_info(image_id, os.path.basename(img_path), img_size)
     output["images"].append(image_info)
 
+    cb.print_status(10, [0, 3])  # 10~13
+
     for img, position in zip(imgs, positions):
         # detecting for building
         bbox_img, building_mask, colors, rcnn_info = mask_rcnn.detect_image(img, position)
@@ -111,8 +115,7 @@ def main(img_path: os.path):
         # merge colors for building and road
         colors.append(road_color)
 
-        json_data, ann_id = create_json(building_mask, road_mask, rcnn_info, colors, position, 
-                                deformer, annotation_id, image_id)
+        json_data, ann_id = create_json(building_mask, road_mask, rcnn_info, colors, position, deformer, annotation_id, image_id)
 
         # get all crop image predict result mask
         road_masks.append(road_mask)
@@ -121,19 +124,16 @@ def main(img_path: os.path):
         # annotations id
         annotation_id = ann_id
 
+    # print status for sending to js
+    cb.print_status(30, [0, 3])  # 10~13 + 30 + 0~3 = 40~46
+
     # save json file
     # import json
     # with open(cfg["result_dir"] + 'result.json', 'w') as f:
     #     json.dump(json_data,f)
 
-
     # save predict result
     save_img(img_path, building_masks, road_masks, cfg["pred_path"], unit_pixel)
-
-    status = print_status(status + 10, [0, 3])  # 10~13
-
-    # print status for sending to js
-    status = print_status(status + 30, [0, 3])  # 10~13 + 30 + 0~3 = 40~46
 
     """ temporal code for test
     total_mask = np.asarray(Image.open(os.path.join(cfg["pred_path"], cfg["img_name"] + '_mask.png')))
@@ -141,10 +141,12 @@ def main(img_path: os.path):
     """
 
     # print status for sending to js
-    print_status(status + 45, [5, 8])  # 40~46 + 45 + 5~8 = 90~99
+    cb.print_status(45, [5, 8])  # 40~46 + 45 + 5~8 = 90~99
 
     # convert from data formed json format to geojson
     tif_img(json_data, cfg["base_dir"], cfg["geo_path"])
+
+    cb.print_status(100, [0, 0])
 
     finish = (datetime.datetime.now() - start).seconds
     print(f"\nduring time : {finish} s")

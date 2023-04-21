@@ -157,24 +157,26 @@ def _setting(cfg: Dict) -> None:
     os.makedirs(cfg["geo_path"], exist_ok=True)
 
 
+class callbackStatus:
+    def __init__(self, type):
+        self.status = 0
+        self.type = type
 
-def print_status(progress: int, rand: List) -> int:
-    """
-    print present status and send to js through flush
+    def print_status(self, progress, rand):
+        """
+        print present status and send to js through flush
+        :param progress: how much status is progressed
+        :param rand: random range to add present status
+        :return : present status
+        """
+        # add previous status and random int
+        self.status = self.status + progress + random.randint(rand[0], rand[1])
+        # if added number is over the 100, limit to not exceed 100.
+        if self.status > 100:
+            self.status = 100
 
-    :param progress : number of previous status
-    :param rand : random range to add present status
-    :return : present status
-    """
-    # add previous status and random int
-    status = progress + random.randint(rand[0], rand[1])
-    # if added number is over the 100, limit to not exceed 100.
-    if status > 100:
-        status = 100
-
-    # print present status as flush
-    print('{"type": "status", "value": ' + str(status) + '}', end="", flush=True)
-    return status
+        # print present status as flush
+        print('{"type": ' + self.type + ', "value": ' + str(self.status) + '}', end="", flush=True)
 
 
 def random_color() -> List:
